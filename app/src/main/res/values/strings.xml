@@ -5,6 +5,8 @@
     <string name="main.hint.percentage">% de propina</string>
     <string name="main.button.increase">+</string>
     <string name="main.button.decrease">-</string>
-    <string name="main.button.clear">Limpiar</string>
+    <string name="main.button.clear">Borrar Recientes</string>
+    <string name="global.message.tip">Propina %,.1f</string>
+    <string name="tipetail.message.bill">Total %,.1f</string>
     <string name="min.menu.action.about">Acerca de</string>
 </resources>

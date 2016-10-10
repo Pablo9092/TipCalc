@@ -7,7 +7,7 @@ import android.app.Application;
  */
 
 public class TipCalcApp extends Application {
-    private final static String ABOUT_URL = "https://github.com/";
+    private final static String ABOUT_URL = "https://www.google.com/";
 
     public String getAboutUrl()
     {
