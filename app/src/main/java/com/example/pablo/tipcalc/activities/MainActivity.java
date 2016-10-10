@@ -1,4 +1,4 @@
-package com.example.pablo.tipcalc;
+package com.example.pablo.tipcalc.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.pablo.tipcalc.R;
+import com.example.pablo.tipcalc.TipCalcApp;
+import com.example.pablo.tipcalc.fragments.TipHistoryListFragment;
+import com.example.pablo.tipcalc.fragments.TipHistoryListFragmentListener;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -24,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int TIP_STEP_CHANGE = 1;
     private final static int DEFAULT_TIP_CHANGE = 10;
+    private TipHistoryListFragmentListener fragmentListener;
+
     @BindView(R.id.inputBill)
     EditText inputBill;
     @BindView(R.id.btnSubmit)
@@ -47,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        TipHistoryListFragment fragment = (TipHistoryListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentList);
+
+        fragment.setRetainInstance(true);
+        fragmentListener = (TipHistoryListFragmentListener) fragment;
     }
 
     @Override
@@ -70,9 +81,13 @@ public class MainActivity extends AppCompatActivity {
         if (!strInputTotal.isEmpty()) {
             double total = Double.parseDouble(strInputTotal);
             int tipPercentage = getTipPercentage();
+
             double tip = total * tipPercentage / 100d;
 
             String strTip = String.format(getString(R.string.global_message_tip, tip));
+
+            fragmentListener.action(strTip);
+
             txtTip.setVisibility(View.VISIBLE);
             txtTip.setText(strTip);
         }
@@ -80,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnIncrease)
     public void handleClickIncrease() {
-        handleTipChange(1);
+        handleTipChange(TIP_STEP_CHANGE);
     }
 
     @OnClick(R.id.btnDecrease)
     public void handleClickIDecrease() {
-        handleTipChange(-1);
+        handleTipChange(-TIP_STEP_CHANGE);
     }
 
     public int getTipPercentage() {
@@ -93,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
         String strInputPercentage = inputPercentage.getText().toString().trim();
         if (!strInputPercentage.isEmpty()) {
             tipPercentage = Integer.parseInt(strInputPercentage);
-        } else if (strInputPercentage.isEmpty()) {
+        }
+        else
+        {
             inputPercentage.setText(String.valueOf(DEFAULT_TIP_CHANGE));
         }
 
@@ -105,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
         int tipPercentage = getTipPercentage();
         tipPercentage += change;
 
-        if(tipPercentage>0)
-        {
+        if (tipPercentage > 0) {
             String strtipPercentage = String.format(getString(tipPercentage));
             inputPercentage.setText(strtipPercentage);
         }
