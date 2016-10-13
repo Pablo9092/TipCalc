@@ -19,10 +19,13 @@ import com.example.pablo.tipcalc.R;
 import com.example.pablo.tipcalc.TipCalcApp;
 import com.example.pablo.tipcalc.fragments.TipHistoryListFragment;
 import com.example.pablo.tipcalc.fragments.TipHistoryListFragmentListener;
+import com.example.pablo.tipcalc.models.TipRecord;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
         if(!strInputTotal.isEmpty()) {
             double total = Double.parseDouble(strInputTotal);
             int tipPercentage = getTipPercentage();
+            TipRecord record= new TipRecord();
+            record.setBill(total);
+            record.setTipPercentage(tipPercentage);
+            record.setTimestamp(new Date());
 
-            double tip = total * (tipPercentage/100d);
-
-            String strTip = String.format(getString(R.string.global_message_tip), tip);
-
-            fragmentListener.action(strTip);
-
+            String strTip = String.format(getString(R.string.global_message_tip), record.getTip());
+            fragmentListener.addToList(record);
 
             txtTip.setVisibility(View.VISIBLE);
             txtTip.setText(strTip);
