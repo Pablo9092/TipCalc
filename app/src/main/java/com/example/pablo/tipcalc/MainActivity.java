@@ -1,4 +1,4 @@
-package com.example.pablo.tipcalc.activities;
+package com.example.pablo.tipcalc;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +15,12 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.pablo.tipcalc.R;
-import com.example.pablo.tipcalc.TipCalcApp;
 import com.example.pablo.tipcalc.fragments.TipHistoryListFragment;
 import com.example.pablo.tipcalc.fragments.TipHistoryListFragmentListener;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private final static int TIP_STEP_CHANGE = 1;
-    private final static int DEFAULT_TIP_CHANGE = 10;
-    private TipHistoryListFragmentListener fragmentListener;
+    private final static int DEFAULT_TIP_PERCENTAGE= 10;
 
     @BindView(R.id.inputBill)
     EditText inputBill;
@@ -49,15 +50,20 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout contentTip;
 
 
+    private TipHistoryListFragmentListener fragmentListener;
+    private GoogleApiClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         TipHistoryListFragment fragment = (TipHistoryListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentList);
 
         fragment.setRetainInstance(true);
         fragmentListener = (TipHistoryListFragmentListener) fragment;
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -77,16 +83,19 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btnSubmit)
     public void handleSubmit() {
         hideKeyboard();
+
         String strInputTotal = inputBill.getText().toString().trim();
-        if (!strInputTotal.isEmpty()) {
+
+        if(!strInputTotal.isEmpty()) {
             double total = Double.parseDouble(strInputTotal);
             int tipPercentage = getTipPercentage();
 
-            double tip = total * tipPercentage / 100d;
+            double tip = total * (tipPercentage/100d);
 
-            String strTip = String.format(getString(R.string.global_message_tip, tip));
+            String strTip = String.format(getString(R.string.global_message_tip), tip);
 
             fragmentListener.action(strTip);
+
 
             txtTip.setVisibility(View.VISIBLE);
             txtTip.setText(strTip);
@@ -95,23 +104,23 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnIncrease)
     public void handleClickIncrease() {
+        hideKeyboard();
         handleTipChange(TIP_STEP_CHANGE);
     }
 
     @OnClick(R.id.btnDecrease)
     public void handleClickIDecrease() {
+        hideKeyboard();
         handleTipChange(-TIP_STEP_CHANGE);
     }
 
     public int getTipPercentage() {
-        int tipPercentage = DEFAULT_TIP_CHANGE;
+        int tipPercentage = DEFAULT_TIP_PERCENTAGE;
         String strInputPercentage = inputPercentage.getText().toString().trim();
         if (!strInputPercentage.isEmpty()) {
             tipPercentage = Integer.parseInt(strInputPercentage);
-        }
-        else
-        {
-            inputPercentage.setText(String.valueOf(DEFAULT_TIP_CHANGE));
+        } else {
+            inputPercentage.setText(String.valueOf(DEFAULT_TIP_PERCENTAGE));
         }
 
         return tipPercentage;
@@ -132,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     private void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
-            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (NullPointerException npe) {
             Log.e(getLocalClassName(), Log.getStackTraceString(npe));
         }
@@ -149,4 +158,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
 }

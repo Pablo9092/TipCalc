@@ -14,3 +14,4 @@ public class TipCalcApp extends Application {
         return ABOUT_URL;
     }
 }
+
