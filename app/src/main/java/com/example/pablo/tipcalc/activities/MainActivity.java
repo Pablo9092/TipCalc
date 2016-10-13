@@ -1,4 +1,4 @@
-package com.example.pablo.tipcalc;
+package com.example.pablo.tipcalc.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.pablo.tipcalc.R;
+import com.example.pablo.tipcalc.TipCalcApp;
 import com.example.pablo.tipcalc.fragments.TipHistoryListFragment;
 import com.example.pablo.tipcalc.fragments.TipHistoryListFragmentListener;
 import com.google.android.gms.appindexing.Action;
