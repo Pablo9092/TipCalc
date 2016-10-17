@@ -26,8 +26,8 @@ ext{
     minSdkVersion = 16
     targetSdkVersion = 24
     compileSdkVersion = 24
-    buildToolsVersion = "24.0.0"
+    buildToolsVersion = "24.0.1"
 
     supportLibraryVersion = '24.2.1'
-    butterknifeVersion = '8.4.0'
+    butterknifeVersion = '7.0.1'
 }

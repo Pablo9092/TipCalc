@@ -16,7 +16,7 @@ import com.example.pablo.tipcalc.models.TipRecord;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  */
 public class TipHistoryListFragment extends Fragment implements TipHistoryListFragmentListener {
 
-    @BindView(R.id.recyclerView)
+    @Bind(R.id.recyclerView)
     RecyclerView reciclerView;
 
     TipAdapter adapter;
@@ -46,7 +46,7 @@ public class TipHistoryListFragment extends Fragment implements TipHistoryListFr
     }
 
     private void initAdapter() {
-        if(adapter ==null){
+        if(adapter == null){
             adapter = new TipAdapter(getActivity().getApplicationContext(), new ArrayList<TipRecord>());
         }
     }

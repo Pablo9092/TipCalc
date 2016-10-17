@@ -15,7 +15,7 @@ import com.example.pablo.tipcalc.models.TipRecord;
 
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -65,11 +65,12 @@ public class TipAdapter extends RecyclerView.Adapter<TipAdapter.ViewHolder> {
     }
 
     public static class  ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.txtContent)
+        @Bind(R.id.txtContent)
         TextView txtContet;
 
         public ViewHolder(View itemView){
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
     }

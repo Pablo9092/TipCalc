@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.pablo.tipcalc.R;
@@ -27,35 +26,34 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Date;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private final static int TIP_STEP_CHANGE = 1;
-    private final static int DEFAULT_TIP_PERCENTAGE= 10;
-
-    @BindView(R.id.inputBill)
+    @Bind(R.id.inputBill)
     EditText inputBill;
-    @BindView(R.id.btnSubmit)
+    @Bind(R.id.btnSubmit)
     Button btnSubmit;
-    @BindView(R.id.inputPercentage)
+    @Bind(R.id.inputPercentage)
     EditText inputPercentage;
-    @BindView(R.id.btnIncrease)
+    @Bind(R.id.btnIncrease)
     Button btnIncrease;
-    @BindView(R.id.btnDecrease)
+    @Bind(R.id.btnDecrease)
     Button btnDecrease;
-    @BindView(R.id.btnClear)
+    @Bind(R.id.btnClear)
     Button btnClear;
-    @BindView(R.id.txtTip)
+    @Bind(R.id.txtTip)
     TextView txtTip;
-    @BindView(R.id.content_tip)
-    RelativeLayout contentTip;
 
 
     private TipHistoryListFragmentListener fragmentListener;
+
+    private final static int TIP_STEP_CHANGE = 1;
+    private final static int DEFAULT_TIP_PERCENTAGE = 10;
+
     private GoogleApiClient client;
 
     @Override
@@ -91,10 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
         String strInputTotal = inputBill.getText().toString().trim();
 
-        if(!strInputTotal.isEmpty()) {
+        if (!strInputTotal.isEmpty()) {
             double total = Double.parseDouble(strInputTotal);
             int tipPercentage = getTipPercentage();
-            TipRecord record= new TipRecord();
+
+            TipRecord record = new TipRecord();
             record.setBill(total);
             record.setTipPercentage(tipPercentage);
             record.setTimestamp(new Date());
@@ -137,8 +136,7 @@ public class MainActivity extends AppCompatActivity {
         tipPercentage += change;
 
         if (tipPercentage > 0) {
-            String strtipPercentage = String.format(getString(tipPercentage));
-            inputPercentage.setText(strtipPercentage);
+            inputPercentage.setText(String.valueOf(tipPercentage));
         }
     }
 
@@ -163,39 +161,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }
