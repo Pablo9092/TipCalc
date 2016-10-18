@@ -27,7 +27,6 @@
         android:hint="@string/main.hint.percentage"
         android:ems="10"
         android:id="@+id/inputPercentage"
-        android:layout_toRightOf="@+id/txtTip"
         android:layout_below="@+id/btnSubmit"
         android:layout_toLeftOf="@+id/btnIncrease"
         android:layout_toStartOf="@+id/btnIncrease"
@@ -73,7 +72,7 @@
         android:layout_alignEnd="@+id/btnDecrease" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:text="@string/main.button.increase"
         android:id="@+id/btnIncrease"
@@ -82,7 +81,7 @@
         android:layout_toEndOf="@+id/btnClear" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:text="@string/main.button.decrease"
         android:id="@+id/btnDecrease"

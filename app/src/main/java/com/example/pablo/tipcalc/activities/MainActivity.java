@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btnClear)
     public void clearRecyclerView(){
         fragmentListener.clearList();
+        txtTip.setText("\0");
     }
 
     @OnClick(R.id.btnIncrease)
