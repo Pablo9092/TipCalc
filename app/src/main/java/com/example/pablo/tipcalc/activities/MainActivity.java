@@ -106,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.btnClear)
+    public void clearRecyclerView(){
+        fragmentListener.clearList();
+    }
+
     @OnClick(R.id.btnIncrease)
     public void handleClickIncrease() {
         hideKeyboard();
